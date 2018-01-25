@@ -1,0 +1,45 @@
+/**
+ * Represents a ball.
+ */
+class Ball {
+
+    field int x, y, dx, dy, radius;
+
+    /** Constructs a new ball with given coordinates, velocity and radius */
+    constructor Ball new(int Ax, int Ay, int Adx, int Ady, int Aradius) {
+        let x = Ax;
+        let y = Ay;
+        let dx = Adx;
+        let dy = Ady;
+        let radius = Aradius;
+        do show();
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Shows the ball. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** Hides the ball. */
+    method void hide() {
+        do Screen.setColor(false);
+        do draw();
+        return;
+    }
+
+    /** Draws the ball. */
+    method void draw() {
+        do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+}

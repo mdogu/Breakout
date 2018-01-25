@@ -1,0 +1,92 @@
+/**
+ * Represents a Breakout game.
+ */
+class BreakoutGame {
+
+    field Ball ball;
+    field Paddle paddle;
+    field int numberOfBricks, brickLeftOffset, brickTopOffset;
+    field Array bricks;
+    field boolean exit;
+    field int score, lives;
+
+    /** Constructs a new Breakout Game */
+    constructor BreakoutGame new() {
+        do Screen.clearScreen();
+        let ball = Ball.new(252, 222, 3, -3, 3);
+        let paddle = Paddle.new(230, 229, 50, 7, 6);
+
+        do drawInformationBoard();
+        do updateScore(0);
+        do updateLives(3);
+
+        let exit = false;
+
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do ball.dispose();
+        do padle.dispose();
+        var int i;
+        let i = 0;
+        while (i < numberOfBricks) {
+            do bricks[i].dispose();
+        }
+        do bricks.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Draws bottom separator and Score/Lives labels */
+    method void drawInformationBoard() {
+        do Screen.drawRectangle(0, 238, 511, 240);
+	    do Output.moveCursor(22,0);
+	    do Output.printString("Score:");
+        do Output.moveCursor(22,56);
+	    do Output.printString("Lives:");
+    }
+
+    /** Updates score */
+    method void updateScore(int newScore) {
+        let score = newScore;
+        do Output.moveCursor(22,7);
+        do Output.printInt(newScore);
+        return;
+    }
+
+    /** Updates remaining lives */
+    method void updateLives(int newLives) {
+        let lives = newLives;
+        do Output.moveCursor(22,63);
+        do Output.printInt(newLives);
+        return;
+    }
+
+        /** Moves paddle to right */
+    method void movePaddleRight() {
+        if ((paddle.x - paddle.dx) > 0) {
+            let paddle.x = paddle.x - paddle.dx;
+        } else {
+            let paddle.x = 0;
+        }
+        return;
+    }
+
+    /** Moves paddle to left */
+    method void movePaddleLeft() {
+        if ((paddle.x + paddle.width + paddle.dx) < 512) {
+            let paddle.x = paddle.x + paddle.dx;
+        } else {
+            let paddle.x = 512;
+        }
+        return;
+    }
+
+    /** Starts the game and handles the input from user. */
+    method void run() {
+
+    }
+
+}

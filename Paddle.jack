@@ -1,0 +1,47 @@
+/**
+ * Represents a paddle.
+ */
+class Paddle {
+
+    field int x, y;
+    field int width, height;
+    filed int dx;
+
+    /** Constructs a new paddle with given coordinates and size */
+    constructor Paddle new(int Ax, int Ay, int Awidth, int Aheight, int Adx) {
+        let x = Ax;
+        let y = Ay;
+        let width = Awidth;
+        let height = Aheight;
+        let dx = Adx;
+        do show();
+        return this;
+    }
+
+    /** Deallocates the object's memory. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Shows the paddle. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** Hides the paddle. */
+    method void hide() {
+        do Screen.setColor(false);
+        do draw();
+        return;
+    }
+
+    /** Draws the paddle. */
+    method void draw() {
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        return;
+    }
+
+}
