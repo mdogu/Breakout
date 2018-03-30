@@ -5,21 +5,23 @@ class BreakoutGame {
 
     field Ball ball;
     field Paddle paddle;
-    field int numberOfBricks, brickLeftOffset, brickTopOffset;
-    field Array bricks;
-    field boolean exit;
+    field int columnCount, rowCount, bricksCount;
+    //field Array bricks;
     field int score, lives;
+    field boolean exit;
 
     /** Constructs a new Breakout Game */
     constructor BreakoutGame new() {
         do Screen.clearScreen();
         let ball = Ball.new(252, 222, 3, -3, 3);
         let paddle = Paddle.new(230, 229, 50, 7, 6);
-
+        let columnCount = 5;
+        let rowCount = 3;
+        let bricksCount = columnCount * rowCount;
+        //do createBricks();
         do drawInformationBoard();
         do updateScore(0);
         do updateLives(3);
-
         let exit = false;
 
         return this;
@@ -33,6 +35,7 @@ class BreakoutGame {
         let i = 0;
         while (i < numberOfBricks) {
             do bricks[i].dispose();
+            let i = i + 1;
         }
         do bricks.dispose();
         do Memory.deAlloc(this);
@@ -64,29 +67,73 @@ class BreakoutGame {
         return;
     }
 
-        /** Moves paddle to right */
-    method void movePaddleRight() {
-        if ((paddle.x - paddle.dx) > 0) {
-            let paddle.x = paddle.x - paddle.dx;
-        } else {
-            let paddle.x = 0;
-        }
-        return;
-    }
-
-    /** Moves paddle to left */
-    method void movePaddleLeft() {
-        if ((paddle.x + paddle.width + paddle.dx) < 512) {
-            let paddle.x = paddle.x + paddle.dx;
-        } else {
-            let paddle.x = 512;
+    /** Creates bricks */
+    method void createBricks() {
+        let bricks = Array.new(numberOfBricks);
+        var int i;
+        let i = 0;
+        while (i < numberOfBricks) {
+            bricks[i] = Brick.new(0, 0, 30, 8); // TODO: Adjust size and location
+            let i = i + 1;
         }
         return;
     }
 
     /** Starts the game and handles the input from user. */
     method void run() {
+        var char key;  // the key currently pressed by the user
+        //var boolean exit;
+        //let exit = false;
+      
+        while (~exit) {
+            let key = Keyboard.keyPressed();
+            if (key = 81)  { let exit = true; }        // q key
+            if (key = 130) { do movePaddleLeft(); }    // left arrow
+            if (key = 132) { do movePaddleRight(); }   // right arrow
+            do moveBall();
+        }
+    }
 
+    method void movePaddleLeft() {
+        if ((paddle.getX() + paddle.getWidth() + paddle.getDx()) < 512) {
+            do paddle.moveRight();
+        }
+        return;
+    }
+
+    method void movePaddleRight() {
+        if ((paddle.getX() - paddle.getDx()) > 0) {
+            do paddle.moveLeft();
+        }
+        return;
+    }
+
+    method void moveBall() {
+        var int nextLeftEdge;
+        var int nextRightEdge;
+        var int nextTopEdge;
+        var int nextBottomEdge;
+        var boolean onPaddle;
+        let nextLeftEdge = ball.getX() + ball.getDx() - ball.getRadius();
+        let nextRightEdge = ball.getX() + ball.getDx() + ball.getRadius();
+        let nextTopEdge = ball.getY() + ball.getDy() - ball.getRadius();
+        let nextBottomEdge = ball.getY() + ball.getDy() + ball.getRadius();
+        let onPaddle = (ball.getX() > paddle.getX()) & (ball.getX() < (paddle.getX() + paddle.getWidth()))
+        
+        if (nextRightEdge > 511) {
+            do ball.setDx(-ball.getDx());
+        } else if (nextLeftEdge < 0) {
+            do ball.setDx(-ball.getDx());
+        } else if (nextTopEdge < 0) {
+            do ball.setDy(-ball.getDy());
+        } else if (onPaddle & (nextBottomEdge > paddle.getY())) {
+            do ball.setDy(-ball.getDy());
+        } else if (nextBottomEdge > 237) {
+            let exit = true;
+        }
+
+        do ball.move();
+        return;
     }
 
 }

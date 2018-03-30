@@ -16,6 +16,23 @@ class Ball {
         return this;
     }
 
+    /** Getter & Setters */
+
+    method int getX() { return x; }
+    method void setX(int Ax) { let x = Ax; return; }
+
+    method int getY() { return y; }
+    method void setY(int Ay) { let y = Ay; return; }
+
+    method int getDx() { return dx; }
+    method void setDx(int Adx) { let dx = Adx; return; }
+
+    method int getDy() { return dy; }
+    method void setDy(int Ady) { let dy = Ady; return; }
+
+    method int getRadius() { return radius; }
+    method void setRadius(int Aradius) { let radius = Aradius; return; }
+
     /** Deallocates the object's memory. */
     method void dispose() {
         do Memory.deAlloc(this);
@@ -39,6 +56,15 @@ class Ball {
     /** Draws the ball. */
     method void draw() {
         do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+    /** Moves the ball. */
+    method void move() {
+        do hide();
+        let x = x + dx;
+        let y = y + dy;
+        do show();
         return;
     }
 
