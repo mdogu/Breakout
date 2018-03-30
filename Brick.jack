@@ -5,7 +5,7 @@ class Brick {
 
     field int x, y;
     field int width, height;
-    field boolean isVisible;
+    field boolean visible;
 
     /** Constructs a new brick with given coordinates and size. */
     constructor Brick new(int Ax, int Ay, int Awidth, int Aheight) {
@@ -13,10 +13,27 @@ class Brick {
         let y = Ay;
         let width = Awidth;
         let height = Aheight;
-        let isVisible = true;
+        let visible = true;
         do show();
         return this;
     }
+
+    /** Getter & Setters */
+
+    method int getX() { return x; }
+    method void setX(int Ax) { let x = Ax; return; }
+
+    method int getY() { return y; }
+    method void setY(int Ay) { let y = Ay; return; }
+
+    method int getWidth() { return width; }
+    method void setWidth(int Awidth) { let width = Awidth; return; }
+
+    method int getHeight() { return height; }
+    method void setHeight(int Aheight) { let height = Aheight; return; }
+
+    method boolean isVisible() { return visible; }
+    method void setVisible(boolean value) { let visible = value; return; }
 
     /** Deallocates the object's memory. */
     method void dispose() {
